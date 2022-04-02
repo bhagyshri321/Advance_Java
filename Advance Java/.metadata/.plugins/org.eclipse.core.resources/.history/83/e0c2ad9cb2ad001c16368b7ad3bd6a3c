@@ -1,0 +1,90 @@
+package com.rays.CTRL;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+@WebServlet
+public class LoginCtl extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
+	public LoginCtl() {
+		super();
+
+	}
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		
+		
+		
+		
+
+		/*
+		 * String user = request.getParameter("user"); 
+		 * String pwd =  request.getParameter("pwd");
+		 * Cookie c = new Cookie(user, pwd);
+		 * c.setMaxAge(24*60*60); 
+		 * response.setContentType("text/html");
+		 * PrintWriter out=response.getWriter();
+		 * response.addCookie(c);
+		 */
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+		String user = request.getParameter("user");
+		String pwd = request.getParameter("pwd");
+
+		if (user.equals("Bhagyshri") && pwd.equals("12345")) {
+			
+			HttpSession session = request.getSession();
+			session.setAttribute("user", user);
+			session.setAttribute("pwd", pwd);
+			
+			
+	
+			
+			RequestDispatcher rd = request.getRequestDispatcher("/WelcomeCtl");
+			rd.forward(request, response);
+		} else if (user.equals(pwd)) {
+
+			RequestDispatcher rd = request.getRequestDispatcher("LoginF.jsp");
+			request.setAttribute("errorlogin", "Please Enter LoginID");
+			request.setAttribute("errorpass", "Please Enter Password");
+			rd.forward(request, response);
+		} else if (user.equals(" ") || pwd.equals(" ")) {
+			RequestDispatcher rd = request.getRequestDispatcher("LoginF.jsp");
+			request.setAttribute("errorpass", "Please Enter Password");
+			request.setAttribute("errorlogin", "Please Enter LoginID");
+			rd.forward(request, response);
+		} else if (user.equals("")) {
+
+			RequestDispatcher rd = request.getRequestDispatcher("LoginF.jsp");
+			request.setAttribute("errorlogin", " Enter LoginID");
+			rd.forward(request, response);
+		} else if (pwd.equals("")) {
+
+			RequestDispatcher rd = request.getRequestDispatcher("LoginF.jsp");
+			request.setAttribute("errorpass", " Enter Password");
+			rd.forward(request, response);
+		}
+
+		else {
+			RequestDispatcher rd = request.getRequestDispatcher("LoginF.jsp");
+			request.setAttribute("eror", "Invalid User & pwd");
+			rd.forward(request, response);
+		}
+
+	}
+
+}

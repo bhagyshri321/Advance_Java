@@ -1,0 +1,65 @@
+
+<%@page import="com.rays.Model.StudentModel"%>
+<%@page import="com.rays.Bean.StudentBean"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Student Management</title>
+</head>
+<body>
+
+<%-- <jsp:useBean id="bean" scope="page" class=" com.rays.Bean.StudentBean"></jsp:useBean>
+<jsp:setProperty name="bean" property="*" />
+
+     <jsp:setProperty property="RollNo" name="RollNo"/>
+     <jsp:setProperty property="Fname" name="Fname"/>
+     <jsp:setProperty property="Lname" name="Lname"/>
+     <jsp:setProperty property="Session" name="Session"/> --%>
+ 
+ <%
+ StudentBean bean  = new StudentBean();
+ bean.setrollNo(request.getParameter("RollNo"));
+ bean.setFname(request.getParameter("Fname"));
+ bean.setLname(request.getParameter("Lname"));
+ bean.setSession(request.getParameter("Session"));
+ 
+ %> 
+ 
+<%
+
+String op = request.getParameter("operation");
+if(op.equals("Add")){
+StudentModel.add(bean);	
+response.sendRedirect("Data.jsp");
+}
+if(op.equals("Delete")){
+	StudentModel.Delete(bean);
+	response.sendRedirect("Data.jsp");
+}
+if(op.equals("Modify")){
+StudentModel.Update(bean);
+response.sendRedirect("Data.jsp");
+}
+if(op.equals("Get")){
+	bean = StudentModel.Get(bean);
+
+RequestDispatcher rd = request.getRequestDispatcher("GetView.jsp");{
+	request.setAttribute("bean", bean);
+rd.forward(request, response);
+}
+}
+if(op.equals("Search")){
+	bean = StudentModel.Search(bean);
+
+	RequestDispatcher rd = request.getRequestDispatcher("SearchView.jsp");{
+		request.setAttribute("bean", bean);
+	rd.forward(request, response);
+}
+}
+%> 
+
+</body>
+</html>
